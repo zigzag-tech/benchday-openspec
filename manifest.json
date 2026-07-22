@@ -14,6 +14,7 @@
   "description": "Surfaces a project's OpenSpec state — open changes, task progress, validation — on the work row and in detail.",
   "permissions": [
     "project.read.metadata",
+    "project.read.files:openspec/changes",
     "process.exec:openspec"
   ],
   "matches": {
@@ -22,7 +23,8 @@
   "probes": [
     "probes/has_openspec.json",
     "probes/list.json",
-    "probes/active_change.json"
+    "probes/active_change.json",
+    "probes/checklist.json"
   ],
   "report": {
     "payload_schema": "benchday.openspec.report/1",

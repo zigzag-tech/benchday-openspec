@@ -42,6 +42,16 @@
       "get": "/captures/change",
       "default": null
     },
+    "task_outlines": {
+      "probe": "checklist",
+      "get": "/outlines",
+      "default": []
+    },
+    "focused_task_detail": {
+      "probe": "checklist",
+      "get": "/focused",
+      "default": null
+    },
     "active_change_completed": {
       "find": {
         "probe": "list",

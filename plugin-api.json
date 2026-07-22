@@ -24,7 +24,7 @@
     { "id": "extension.web", "version": 1, "views": ["page"] }
   ],
 
-  "probe_kinds": ["path_exists", "path_capture", "file_meta", "exec_version", "exec_json", "exec_text"],
+  "probe_kinds": ["path_exists", "path_capture", "file_meta", "exec_version", "exec_json", "exec_text", "checklist_md"],
 
   "probe_context_keys": ["pane.cwd", "pane.id", "project.root"],
 

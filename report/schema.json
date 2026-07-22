@@ -43,6 +43,143 @@
       ],
       "description": "the change this pane is working on, ONLY when its cwd is genuinely inside openspec/changes/<name>; null otherwise (never inferred from sharing a repo)"
     },
+    "task_outlines": {
+      "type": "array",
+      "maxItems": 32,
+      "description": "bounded per-change checklist projection parsed from tasks.md (phase rollups + next-attention); NEVER raw task bodies. Joined to `changes` by name on the client.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "task_detail_status": {
+            "type": "string",
+            "description": "available | absent | unparseable | truncated | read_error"
+          },
+          "phases": {
+            "type": "array",
+            "maxItems": 12,
+            "items": {
+              "type": "object",
+              "properties": {
+                "index": {
+                  "type": "integer"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "checked": {
+                  "type": "integer"
+                },
+                "total": {
+                  "type": "integer"
+                },
+                "verify_pending": {
+                  "type": "integer"
+                },
+                "partial": {
+                  "type": "integer"
+                },
+                "blocked": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "next_attention": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "description": "the one item deserving attention: {task_id, phase_index, kind (blocked|verify|partial|next), checked, text}; null when all tasks are checked",
+            "properties": {
+              "task_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "phase_index": {
+                "type": "integer"
+              },
+              "kind": {
+                "type": "string"
+              },
+              "checked": {
+                "type": "boolean"
+              },
+              "text": {
+                "type": "string"
+              }
+            }
+          },
+          "verify_pending": {
+            "type": "integer"
+          },
+          "blocked": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "focused_task_detail": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "the FULL parsed checklist for the single associated change only (cwd genuinely inside its dir); null otherwise. Bounded to 64 tasks.",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "tasks": {
+          "type": "array",
+          "maxItems": 64,
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "phase_index": {
+                "type": "integer"
+              },
+              "checked": {
+                "type": "boolean"
+              },
+              "state": {
+                "type": "string",
+                "description": "open | checked | unverified | partial | blocked"
+              },
+              "text": {
+                "type": "string"
+              },
+              "annotations": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "type": "string"
+                    },
+                    "text": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "truncated": {
+          "type": "boolean"
+        }
+      }
+    },
     "active_change_completed": {
       "type": [
         "integer",
