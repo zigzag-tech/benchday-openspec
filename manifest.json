@@ -1,0 +1,49 @@
+{
+  "schema": "benchday.plugin/1",
+  "id": "benchday.openspec",
+  "version": "0.8.0",
+  "display_name": "OpenSpec",
+  "publisher": {
+    "id": "benchday",
+    "trust": "first-party"
+  },
+  "api": {
+    "min": 1,
+    "max": 1
+  },
+  "description": "Surfaces a project's OpenSpec state — open changes, task progress, validation — on the work row and in detail.",
+  "permissions": [
+    "project.read.metadata",
+    "process.exec:openspec"
+  ],
+  "matches": {
+    "probe": "has_openspec"
+  },
+  "probes": [
+    "probes/has_openspec.json",
+    "probes/list.json",
+    "probes/active_change.json"
+  ],
+  "report": {
+    "payload_schema": "benchday.openspec.report/1",
+    "schema": "report/schema.json",
+    "map": "report/map.json",
+    "ttl_ms": 60000
+  },
+  "actions": [
+    "actions/choose_change.json",
+    "actions/validate.json",
+    "actions/validate_change.json",
+    "actions/view_status.json"
+  ],
+  "contributions": [
+    "contrib/active_change_badge.json",
+    "contrib/change_count_badge.json",
+    "contrib/choose_change_detail.json",
+    "contrib/project_summary.json",
+    "contrib/terminal_badge.json",
+    "contrib/terminal_change_badge.json",
+    "contrib/validate_action.json",
+    "contrib/validate_change_detail.json"
+  ]
+}

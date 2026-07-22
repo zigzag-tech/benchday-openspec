@@ -1,0 +1,29 @@
+{
+  "schema": "benchday.plugin.contribution/1",
+  "id": "active_change_badge",
+  "slot": "work.row.badges",
+  "priority": 10,
+  "when": {
+    "exists": "active_change"
+  },
+  "decoration": {
+    "icon": "tag",
+    "label": {
+      "template": "{0}",
+      "args": [
+        {
+          "report": "active_change"
+        }
+      ]
+    },
+    "tone": "info",
+    "tooltip": {
+      "template": "OpenSpec change (from this pane's cwd): {0}",
+      "args": [
+        {
+          "report": "active_change"
+        }
+      ]
+    }
+  }
+}

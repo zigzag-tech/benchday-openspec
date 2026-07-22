@@ -1,0 +1,24 @@
+{
+  "schema": "benchday.plugin.action/1",
+  "id": "validate_change",
+  "label": "Validate change",
+  "icon": "check",
+  "effect": "validate",
+  "semantic_key": "openspec.validate_change",
+  "confirm": false,
+  "refreshes_report": true,
+  "command": {
+    "binary": "openspec",
+    "args": [
+      { "const": "validate" },
+      { "report": "active_change" },
+      { "const": "--type" },
+      { "const": "change" },
+      { "const": "--strict" },
+      { "const": "--no-interactive" }
+    ],
+    "timeout_ms": 30000,
+    "max_output_bytes": 65536,
+    "result": "text"
+  }
+}

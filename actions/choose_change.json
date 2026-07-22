@@ -1,0 +1,34 @@
+{
+  "schema": "benchday.plugin.action/1",
+  "id": "choose_change",
+  "label": "Choose change",
+  "icon": "list",
+  "effect": "read",
+  "semantic_key": "openspec.choose_change",
+  "destination": { "surface": "extension.popup", "view": "status" },
+  "popup": {
+    "title": { "const": "Which change is this pane working on?" },
+    "summary": {
+      "template": "{0} active change(s)",
+      "args": [{ "report": "open_changes" }]
+    },
+    "empty_state": { "const": "No active changes in this project." },
+    "rows": {
+      "items_from": "changes",
+      "max_rows": 24,
+      "row": {
+        "key": { "report": "name" },
+        "primary": { "report": "name" },
+        "secondary": { "report": "status" },
+        "progress": {
+          "current": { "report": "completed_tasks" },
+          "total": { "report": "total_tasks" }
+        },
+        "select": {
+          "template": "openspec/changes/{0}",
+          "args": [{ "report": "name" }]
+        }
+      }
+    }
+  }
+}

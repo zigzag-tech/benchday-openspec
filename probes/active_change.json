@@ -1,0 +1,6 @@
+{
+  "kind": "path_capture",
+  "id": "active_change",
+  "from": "pane.cwd",
+  "pattern": "openspec/changes/{change}"
+}

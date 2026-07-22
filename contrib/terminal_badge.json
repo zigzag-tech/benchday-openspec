@@ -1,0 +1,21 @@
+{
+  "schema": "benchday.plugin.contribution/1",
+  "id": "terminal_badge",
+  "slot": "terminal.header.badges",
+  "decoration": {
+    "icon": "spec",
+    "label": {
+      "const": "OpenSpec"
+    },
+    "tone": "info",
+    "tooltip": {
+      "template": "{0} open change(s) \u2014 tap for status",
+      "args": [
+        {
+          "report": "open_changes"
+        }
+      ]
+    }
+  },
+  "action": "view_status"
+}

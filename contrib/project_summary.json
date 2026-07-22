@@ -1,0 +1,11 @@
+{
+  "schema": "benchday.plugin.contribution/1",
+  "id": "project_summary",
+  "slot": "project.summary",
+  "decoration": {
+    "icon": "spec",
+    "label": { "const": "OpenSpec" },
+    "tone": "info",
+    "tooltip": { "template": "{0} open changes", "args": [{ "report": "open_changes" }] }
+  }
+}

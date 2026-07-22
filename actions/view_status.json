@@ -1,0 +1,90 @@
+{
+  "schema": "benchday.plugin.action/1",
+  "id": "view_status",
+  "label": "OpenSpec status",
+  "icon": "spec",
+  "effect": "read",
+  "semantic_key": "openspec.view_status",
+  "destination": {
+    "surface": "extension.web",
+    "view": "page"
+  },
+  "web": {
+    "html": {
+      "const": "<div id=r></div>\n<script>\n(function () {\n  var raw = window.__BENCHDAY__;\n  var d = raw;\n  var changes = Array.isArray(d) ? d : (d && Array.isArray(d.changes) ? d.changes : []);\n  var active = (d && d.active_change) || null;\n  // Distinguish \"the host sent no data\" from \"there are genuinely no changes\".\n  var noData = raw == null || (typeof raw === 'object' && !Array.isArray(raw) && Object.keys(raw).length === 0);\n\n  // Pane context (the query's availability) and hub-computed relevance scores\n  // (openspec changes pane-context-for-extensions + hybrid-pane-relevance-ranking).\n  // The RANKING is done hub-side (lexical + semantic — neither expressible here);\n  // this page only reads the scores and renders the order.\n  var ctx = window.__BENCHDAY_CONTEXT__ || {};\n  var sum = ctx['surface.summary'] || null;\n  var sumStatus = sum && sum.status ? sum.status : 'unavailable';\n  var rel = window.__BENCHDAY_RELEVANCE__ || {};\n\n  var esc = function (s) {\n    return String(s == null ? '' : s).replace(/[&<>\"]/g, function (c) {\n      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;' }[c];\n    });\n  };\n  var pct = function (c, t) { return t > 0 ? Math.round((c / t) * 100) : 0; };\n\n  var head = function () {\n    var done = changes.filter(function (c) {\n      return c.total_tasks > 0 && c.completed_tasks >= c.total_tasks;\n    }).length;\n    return '<div class=hd><div class=t>OpenSpec</div>' +\n      '<div class=s>' + changes.length + ' active change' + (changes.length === 1 ? '' : 's') +\n      (done ? ' &middot; ' + done + ' ready to archive' : '') + '</div></div>';\n  };\n\n  if (!changes.length) {\n    var msg = noData\n      ? '<div class=empty><b>No data reached this page.</b><br>' +\n        'The host did not supply <code>web.data</code> &mdash; usually an app build older than the one that parses it.' +\n        '<br><span class=dbg>payload: ' + esc(JSON.stringify(raw)) + '</span></div>'\n      : '<div class=empty>No active changes in this project.</div>';\n    document.getElementById('r').innerHTML = head() + msg;\n    return;\n  }\n\n  var byName = function (a, b) { return String(a.name).localeCompare(String(b.name)); };\n\n  // Three ordered groups. Association is PROVEN evidence and pins first; a change\n  // is \"suggested\" only if the hub scored it above the floor (present in `rel`),\n  // best-first by that score; the rest is a plain alphabetical inventory. Task\n  // progress orders NOTHING.\n  var associated = changes.filter(function (c) { return c.name === active; });\n  var suggested = changes\n    .filter(function (c) { return c.name !== active && rel[c.name]; })\n    .sort(function (a, b) { return (rel[b.name].score || 0) - (rel[a.name].score || 0); });\n  var picked = {};\n  associated.concat(suggested).forEach(function (c) { picked[c.name] = 1; });\n  var rest = changes.filter(function (c) { return !picked[c.name]; }).sort(byName);\n\n  // Honest degradation: the note appears only when the pane query itself was\n  // ABSENT (no pane, not collected) AND nothing was suggested — never when a\n  // present query (available OR stale) simply matched nothing (that IS ranked).\n  // A stale summary still ranks (rank-on-stale-pane-summary); the Suggested\n  // header then says the ranking used recent, not-current work.\n  var notRanked = sumStatus === 'unavailable';\n  var recent = sumStatus === 'stale' ? ' &middot; based on recent work' : '';\n\n  var rows = function (list, kind) {\n    return list.map(function (c) {\n      var p = pct(c.completed_tasks, c.total_tasks);\n      var complete = c.total_tasks > 0 && c.completed_tasks >= c.total_tasks;\n      var badge = c.name === active ? '<span class=badge>this pane</span>' : '';\n      var reason = kind === 'suggested'\n        ? '<div class=reason>Related to this pane’s work</div>' : '';\n      return (\n        '<div class=\"row' + (c.name === active ? ' active' : '') + '\">' +\n        '<div class=r1><span class=nm>' + esc(c.name) + '</span>' + badge +\n        '<span class=ct>' + (c.completed_tasks || 0) + '/' + (c.total_tasks || 0) + '</span></div>' +\n        '<div class=bar><i style=\"width:' + p + '%\" class=\"' + (complete ? 'ok' : '') + '\"></i></div>' +\n        '<div class=st>' + esc(c.status || '') + (complete ? ' &middot; all tasks done' : '') + '</div>' +\n        reason + '</div>'\n      );\n    }).join('');\n  };\n\n  var html = head();\n  if (associated.length) html += rows(associated, 'active');\n  if (suggested.length) {\n    html += '<div class=grp>Suggested for this pane' + recent + '</div>' + rows(suggested, 'suggested');\n  }\n  if (notRanked && !suggested.length) {\n    html += '<div class=note>Not ranked: pane context unavailable.</div>';\n  } else if (rest.length && (associated.length || suggested.length)) {\n    html += '<div class=grp>All changes</div>';\n  }\n  html += rows(rest, '');\n  document.getElementById('r').innerHTML = html;\n})();\n</script>\n<style>\n  .hd { margin: 0 0 14px; }\n  .hd .t { font-size: 17px; font-weight: 600; }\n  .hd .s { color: var(--bd-muted); font-size: 13px; }\n  .empty { color: var(--bd-muted); }\n  .dbg { font-size: 11px; opacity: .7; word-break: break-all; }\n  code { font-family: ui-monospace, monospace; }\n  .grp { margin: 16px 0 2px; font-size: 12px; font-weight: 600; letter-spacing: .04em;\n         text-transform: uppercase; color: var(--bd-muted); }\n  .note { margin: 12px 0; padding: 8px 10px; border-radius: var(--bd-radius-sm);\n          background: color-mix(in srgb, var(--bd-muted) 12%, transparent);\n          color: var(--bd-muted); font-size: 12px; }\n  .row { padding: 10px 0; border-top: 1px solid var(--bd-line); }\n  .row.active { border-left: 2px solid var(--bd-primary); padding-left: 10px; }\n  .r1 { display: flex; align-items: baseline; gap: 8px; }\n  /* Change names are identifiers you paste into a command, so they must be\n     selectable. WebViews often inherit a no-select default from the host app's\n     styling; state it explicitly rather than relying on that. */\n  .nm { font-weight: 500; word-break: break-word;\n        -webkit-user-select: text; user-select: text;\n        -webkit-touch-callout: default; }\n  .ct { margin-left: auto; color: var(--bd-muted); font-variant-numeric: tabular-nums; font-size: 13px; }\n  .badge { font-size: 11px; padding: 1px 6px; border-radius: var(--bd-radius-sm); background: color-mix(in srgb, var(--bd-primary) 18%, transparent); color: var(--bd-primary); }\n  .bar { height: 3px; margin: 6px 0 4px; background: var(--bd-line); border-radius: var(--bd-radius-sm); overflow: hidden; }\n  .bar i { display: block; height: 100%; background: var(--bd-primary); }\n  .bar i.ok { background: color-mix(in srgb, var(--bd-primary) 70%, #3fb950); }\n  .st { font-size: 12px; color: var(--bd-muted); }\n  .reason { font-size: 12px; color: var(--bd-primary); margin-top: 3px; }\n</style>"
+    },
+    "data": {
+      "report": ""
+    },
+    "context": {
+      "version": 1,
+      "keys": [
+        "surface.summary"
+      ]
+    },
+    "rank": {
+      "candidates": "changes",
+      "id": "name",
+      "text": "name",
+      "query": "surface.summary"
+    }
+  },
+  "footer_actions": [
+    {
+      "action": "choose_change"
+    },
+    {
+      "action": "validate",
+      "when": {
+        "not": {
+          "exists": "active_change"
+        }
+      }
+    },
+    {
+      "action": "validate_change",
+      "when": {
+        "exists": "active_change"
+      }
+    }
+  ],
+  "popup": {
+    "title": {
+      "const": "OpenSpec"
+    },
+    "summary": {
+      "template": "{0} active change(s)",
+      "args": [
+        {
+          "report": "open_changes"
+        }
+      ]
+    },
+    "empty_state": {
+      "const": "No active changes in this project."
+    },
+    "rows": {
+      "items_from": "changes",
+      "max_rows": 24,
+      "row": {
+        "key": {
+          "report": "name"
+        },
+        "primary": {
+          "report": "name"
+        },
+        "secondary": {
+          "report": "status"
+        },
+        "progress": {
+          "current": {
+            "report": "completed_tasks"
+          },
+          "total": {
+            "report": "total_tasks"
+          }
+        }
+      }
+    }
+  }
+}

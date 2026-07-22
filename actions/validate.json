@@ -1,0 +1,11 @@
+{
+  "schema": "benchday.plugin.action/1",
+  "id": "validate",
+  "label": "Validate specs",
+  "icon": "check",
+  "effect": "validate",
+  "semantic_key": "openspec.validate",
+  "confirm": false,
+  "refreshes_report": true,
+  "command": { "binary": "openspec", "args": [{ "const": "validate" }, { "const": "--specs" }], "timeout_ms": 30000, "result": "text" }
+}

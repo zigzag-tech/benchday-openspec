@@ -1,0 +1,64 @@
+{
+  "$comment": "benchday.openspec.report/1 \u2014 the canonical OpenSpec project report payload.",
+  "type": "object",
+  "properties": {
+    "open_changes": {
+      "type": "integer",
+      "description": "count of in-flight changes"
+    },
+    "cli_available": {
+      "type": "boolean",
+      "description": "a compatible openspec CLI produced structured output this evaluation"
+    },
+    "changes": {
+      "type": "array",
+      "maxItems": 32,
+      "description": "bounded per-change state; task counts, not artifact bodies",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "completed_tasks": {
+            "type": "integer"
+          },
+          "total_tasks": {
+            "type": "integer"
+          },
+          "status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "validation_ok": {
+      "type": "boolean",
+      "description": "result of the most recent validate action, when one has run"
+    },
+    "active_change": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "the change this pane is working on, ONLY when its cwd is genuinely inside openspec/changes/<name>; null otherwise (never inferred from sharing a repo)"
+    },
+    "active_change_completed": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "description": "tasks completed in `active_change`; null when no change is associated"
+    },
+    "active_change_total": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "description": "total tasks in `active_change`; null when no change is associated"
+    }
+  },
+  "required": [
+    "open_changes"
+  ]
+}

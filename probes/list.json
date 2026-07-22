@@ -1,0 +1,10 @@
+{
+  "kind": "exec_json",
+  "id": "list",
+  "binary": "openspec",
+  "args": [
+    "list",
+    "--json"
+  ],
+  "timeout_ms": 20000
+}

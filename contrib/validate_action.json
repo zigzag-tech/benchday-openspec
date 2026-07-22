@@ -1,0 +1,25 @@
+{
+  "schema": "benchday.plugin.contribution/1",
+  "id": "validate_contrib",
+  "slot": "work.detail.actions",
+  "when": {
+    "all": [
+      {
+        "eq": [
+          {
+            "report": "cli_available"
+          },
+          {
+            "const": true
+          }
+        ]
+      },
+      {
+        "not": {
+          "exists": "active_change"
+        }
+      }
+    ]
+  },
+  "action": "validate"
+}

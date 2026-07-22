@@ -1,0 +1,66 @@
+{
+  "schema": "benchday.plugin.report-map/1",
+  "requires": [
+    "has_openspec",
+    "list"
+  ],
+  "payload": {
+    "open_changes": {
+      "count": {
+        "probe": "list",
+        "get": "/json/changes"
+      }
+    },
+    "cli_available": {
+      "exists": "list"
+    },
+    "changes": {
+      "probe": "list",
+      "get": "/json/changes",
+      "max": 32,
+      "item": {
+        "name": {
+          "probe": "list",
+          "get": "/name"
+        },
+        "completed_tasks": {
+          "probe": "list",
+          "get": "/completedTasks"
+        },
+        "total_tasks": {
+          "probe": "list",
+          "get": "/totalTasks"
+        },
+        "status": {
+          "probe": "list",
+          "get": "/status"
+        }
+      }
+    },
+    "active_change": {
+      "probe": "active_change",
+      "get": "/captures/change",
+      "default": null
+    },
+    "active_change_completed": {
+      "find": {
+        "probe": "list",
+        "get": "/json/changes",
+        "where": "/name",
+        "equals_probe": "active_change",
+        "equals_get": "/captures/change",
+        "select": "/completedTasks"
+      }
+    },
+    "active_change_total": {
+      "find": {
+        "probe": "list",
+        "get": "/json/changes",
+        "where": "/name",
+        "equals_probe": "active_change",
+        "equals_get": "/captures/change",
+        "select": "/totalTasks"
+      }
+    }
+  }
+}

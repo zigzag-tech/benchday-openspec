@@ -1,0 +1,17 @@
+{
+  "schema": "benchday.plugin.contribution/1",
+  "id": "choose_change_detail",
+  "slot": "work.detail.actions",
+  "priority": 10,
+  "when": {
+    "eq": [
+      {
+        "report": "cli_available"
+      },
+      {
+        "const": true
+      }
+    ]
+  },
+  "action": "choose_change"
+}
