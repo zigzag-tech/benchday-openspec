@@ -1,8 +1,8 @@
 # benchday.openspec
 
-The first open-source [Benchday](https://github.com/moezakura/mux-pod) project
-plugin, and the reference implementation of the `benchday.plugin/1` extension
-ABI. It surfaces a project's [OpenSpec](https://github.com/Fission-AI/OpenSpec)
+The OpenSpec project plugin for [Benchday](https://github.com/moezakura/mux-pod),
+and the reference implementation of the `benchday.plugin/1` extension ABI. It
+surfaces a project's [OpenSpec](https://github.com/Fission-AI/OpenSpec)
 state — open changes, per-change task progress, and validation — on Benchday's
 work rows, terminal header, and in a relevance-ranked status page.
 
