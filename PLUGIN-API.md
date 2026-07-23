@@ -128,6 +128,50 @@ An `extension.web` action ships `web.html` (≤`web_page_max_bytes`), plus:
   carries a `status` (`available` / stale / `unavailable`); rank only on fresh
   values and degrade honestly otherwise.
 
+- `web.rank` — declares a candidate array plus the `id`/`text` fields on each,
+  and a context key to use as the query. The host scores every candidate against
+  it (lexical + semantic) and injects `window.__BENCHDAY_RELEVANCE__`. This is a
+  RESEMBLANCE signal: use it to order candidates you know nothing else about.
+- `web.rank.evidence` — declares `path_pattern`, the path shape that binds a
+  path the pane demonstrably **wrote** to a candidate id, with `{id}` marking the
+  capture. The host injects `window.__BENCHDAY_EVIDENCE__`, keyed by candidate id
+  and carrying `{tier, write_count, last_write_ms}`.
+
+### Evidence beats resemblance
+
+These two are not interchangeable, and the ordering between them is the whole
+point. A relevance score answers "what does this look like?"; evidence answers
+"what did this pane actually do?" A pane that *discusses* one entity while
+*building* another mentions the discussed one far more often — measured, 72
+mentions to 51 — so a page that ranks on resemblance alone will confidently name
+the wrong thing.
+
+So: render evidence-carrying candidates ABOVE scored ones, exclude them from the
+scored set entirely, and label them with what is known rather than with a claim
+of similarity. A page that says "related to your work" about something it merely
+pattern-matched is asserting a relationship it has not established.
+
+A worked example, from a hypothetical issue-tracker package whose issues live in
+`tickets/<id>/`:
+
+```json
+"web": {
+  "rank": {
+    "candidates": "issues",
+    "id": "key",
+    "text": "title",
+    "query": "surface.summary",
+    "evidence": { "path_pattern": "tickets/{id}/" }
+  }
+}
+```
+
+A pane that edited `tickets/PROJ-419/notes.md` is now ASSOCIATED with `PROJ-419`
+— no scoring involved, and no floor, summary freshness, or embedding provider
+can move it. Every other issue is still ranked softly against the summary, as
+before. Both globals are absent when the host computes nothing, so a page must
+treat missing as "nothing is known", never as "nothing matched".
+
 Style against the host's CSS custom properties (`--bd-primary`, `--bd-muted`,
 `--bd-line`, `--bd-radius-sm`, …) so the page tracks the host theme. The page is
 sealed: it cannot fetch, cannot reach the host, and its only inputs are those two
