@@ -112,6 +112,19 @@ if (api && manifest) {
       else if (dest.view && !surfaces.get(dest.surface).has(dest.view)) fail(`action ${rel}: view ${JSON.stringify(dest.view)} not valid for surface ${dest.surface}`);
     }
     if (a.effect && !api.effect_classes.includes(a.effect)) fail(`action ${rel}: effect ${JSON.stringify(a.effect)} not in ${api.effect_classes.join(', ')}`);
+    // A work-association request reads panes and work items OUTSIDE the current
+    // one — the first such read in this ABI — so the package must ask for it.
+    // Declaring the request without the permission is a packaging error, not a
+    // runtime surprise.
+    if (a.web && a.web.work) {
+      const perms = manifest.permissions || [];
+      if (!perms.includes('work.read.associations')) {
+        fail(`action ${rel}: declares web.work but the manifest does not request work.read.associations`);
+      }
+      if (a.web.work.include_possible && !a.web.work.text) {
+        fail(`action ${rel}: web.work.include_possible needs web.work.text to compare against`);
+      }
+    }
   }
   for (const rel of fixtures) readJson(rel);
 }

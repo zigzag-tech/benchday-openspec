@@ -15,7 +15,9 @@
   "permissions": [
     "project.read.metadata",
     "project.read.files:openspec/changes",
-    "process.exec:openspec"
+    "process.exec:openspec",
+    "work.read.associations",
+    "work.read.labels"
   ],
   "matches": {
     "probe": "has_openspec"
