@@ -7,204 +7,79 @@
   "contribution_schema": "benchday.plugin.contribution/1",
   "action_schema": "benchday.plugin.action/1",
   "probe_schema": "benchday.plugin.probe/1",
+
   "slots": [
-    {
-      "id": "project.summary",
-      "version": 1,
-      "kinds": [
-        "decoration"
-      ]
-    },
-    {
-      "id": "work.row.badges",
-      "version": 1,
-      "kinds": [
-        "decoration"
-      ]
-    },
-    {
-      "id": "work.row.actions",
-      "version": 1,
-      "kinds": [
-        "action"
-      ]
-    },
-    {
-      "id": "work.detail.actions",
-      "version": 1,
-      "kinds": [
-        "action",
-        "decoration"
-      ]
-    },
-    {
-      "id": "terminal.header.badges",
-      "version": 1,
-      "kinds": [
-        "decoration"
-      ]
-    },
-    {
-      "id": "terminal.context.actions",
-      "version": 1,
-      "kinds": [
-        "action"
-      ]
-    },
-    {
-      "id": "terminal.command.palette",
-      "version": 1,
-      "kinds": [
-        "action"
-      ]
-    }
+    { "id": "project.summary", "version": 1, "kinds": ["decoration"] },
+    { "id": "work.row.badges", "version": 1, "kinds": ["decoration"] },
+    { "id": "work.row.actions", "version": 1, "kinds": ["action"] },
+    { "id": "work.detail.actions", "version": 1, "kinds": ["action", "decoration"] },
+    { "id": "terminal.header.badges", "version": 1, "kinds": ["decoration"] },
+    { "id": "terminal.context.actions", "version": 1, "kinds": ["action"] },
+    { "id": "terminal.command.palette", "version": 1, "kinds": ["action"] }
   ],
+
   "surfaces": [
-    {
-      "id": "files",
-      "version": 1,
-      "views": [
-        "browser",
-        "recent",
-        "git"
-      ]
-    },
-    {
-      "id": "extension.popup",
-      "version": 1,
-      "views": [
-        "status"
-      ]
-    },
-    {
-      "id": "extension.web",
-      "version": 1,
-      "views": [
-        "page"
-      ]
-    }
+    { "id": "files", "version": 1, "views": ["browser", "recent", "git"] },
+    { "id": "extension.popup", "version": 1, "views": ["status"] },
+    { "id": "extension.web", "version": 1, "views": ["page"] }
   ],
-  "probe_kinds": [
-    "path_exists",
-    "path_capture",
-    "file_meta",
-    "exec_version",
-    "exec_json",
-    "exec_text",
-    "checklist_md"
-  ],
-  "probe_context_keys": [
-    "pane.cwd",
-    "pane.id",
-    "project.root"
-  ],
-  "effect_classes": [
-    "read",
-    "validate",
-    "write-project",
-    "external"
-  ],
-  "effects_requiring_confirmation": [
-    "write-project",
-    "external"
-  ],
+
+  "probe_kinds": ["path_exists", "path_capture", "file_meta", "exec_version", "exec_json", "exec_text", "checklist_md"],
+
+  "probe_context_keys": ["pane.cwd", "pane.id", "project.root"],
+
+  "effect_classes": ["read", "validate", "write-project", "external"],
+  "effects_requiring_confirmation": ["write-project", "external"],
+
   "permission_classes": [
-    {
-      "id": "project.read.metadata",
-      "parameterized": false
-    },
-    {
-      "id": "project.read.files",
-      "parameterized": true
-    },
-    {
-      "id": "process.exec",
-      "parameterized": true
-    },
-    {
-      "id": "work.read.associations",
-      "parameterized": false
-    },
-    {
-      "id": "work.read.labels",
-      "parameterized": false
-    }
+    { "id": "project.read.metadata", "parameterized": false },
+    { "id": "project.read.files", "parameterized": true },
+    { "id": "process.exec", "parameterized": true },
+    { "id": "work.read.associations", "parameterized": false },
+    { "id": "work.read.labels", "parameterized": false }
   ],
-  "publisher_trust_tiers": [
-    "first-party",
-    "verified",
-    "community"
-  ],
-  "freshness": [
-    "fresh",
-    "stale",
-    "unavailable"
-  ],
-  "completeness": [
-    "complete",
-    "partial"
-  ],
-  "evidence_classes": [
-    "path",
-    "exec",
-    "cwd",
-    "session",
-    "user"
-  ],
-  "diagnostic_severities": [
-    "info",
-    "warning",
-    "error"
-  ],
-  "tones": [
-    "neutral",
-    "info",
-    "success",
-    "warning",
-    "danger"
-  ],
-  "fits": [
-    "fixed",
-    "marquee",
-    "ellipsis"
-  ],
+
+  "publisher_trust_tiers": ["first-party", "verified", "community"],
+
+  "freshness": ["fresh", "stale", "unavailable"],
+  "completeness": ["complete", "partial"],
+  "evidence_classes": ["path", "exec", "cwd", "session", "user"],
+  "diagnostic_severities": ["info", "warning", "error"],
+
+  "tones": ["neutral", "info", "success", "warning", "danger"],
+  "fits": ["fixed", "marquee", "ellipsis"],
   "icon_keys": [
-    "spec",
-    "check",
-    "warning",
-    "error",
-    "info",
-    "list",
-    "play",
-    "refresh",
-    "doc",
-    "folder",
-    "tag",
-    "clock",
-    "question"
+    "spec", "check", "warning", "error", "info", "list", "play", "refresh",
+    "doc", "folder", "tag", "clock", "question"
   ],
+
   "limits": {
     "package_max_files": 256,
     "package_max_file_bytes": 262144,
     "manifest_max_bytes": 65536,
+
     "max_probes": 16,
     "max_actions": 24,
     "max_contributions": 32,
+
     "probe_default_timeout_ms": 5000,
     "probe_max_timeout_ms": 30000,
     "probe_default_max_output_bytes": 65536,
     "probe_max_output_bytes": 262144,
     "max_concurrent_probes": 4,
+
     "action_default_timeout_ms": 20000,
     "action_max_timeout_ms": 120000,
     "action_default_max_output_bytes": 65536,
     "action_max_output_bytes": 262144,
     "max_concurrent_actions": 2,
     "action_max_args": 16,
+
     "report_max_bytes": 131072,
     "report_max_evidence": 32,
     "report_max_diagnostics": 16,
     "report_default_ttl_ms": 60000,
+
     "decoration_max_label_chars": 24,
     "decoration_max_segments": 4,
     "decoration_max_segment_chars": 16,
@@ -215,26 +90,29 @@
     "popup_max_title_chars": 48,
     "popup_max_row_chars": 64,
     "web_page_max_bytes": 65536,
-    "footer_actions_max": 3,
-    "decoration_max_tooltip_chars": 120,
-    "action_max_label_chars": 32,
-    "max_contributions_per_slot": 3,
-    "max_contributions_per_plugin_per_slot": 2,
-    "failure_backoff_threshold": 3,
-    "failure_backoff_base_ms": 30000,
-    "failure_backoff_max_ms": 900000,
-    "cache_max_reports": 64,
-    "cache_max_bytes": 4194304,
-    "cache_max_age_ms": 604800000,
-    "audit_max_records": 512,
-    "audit_max_age_ms": 604800000,
     "work_max_candidates": 32,
     "work_max_subjects_per_candidate": 3,
     "work_max_possible_per_candidate": 1,
     "work_max_subjects_total": 64,
     "work_max_label_chars": 48,
-    "work_max_payload_bytes": 16384
+    "work_max_payload_bytes": 16384,
+    "footer_actions_max": 3,
+    "decoration_max_tooltip_chars": 120,
+    "action_max_label_chars": 32,
+    "max_contributions_per_slot": 3,
+    "max_contributions_per_plugin_per_slot": 2,
+
+    "failure_backoff_threshold": 3,
+    "failure_backoff_base_ms": 30000,
+    "failure_backoff_max_ms": 900000,
+
+    "cache_max_reports": 64,
+    "cache_max_bytes": 4194304,
+    "cache_max_age_ms": 604800000,
+    "audit_max_records": 512,
+    "audit_max_age_ms": 604800000
   },
+
   "reserved_core_fields": [
     "attention",
     "presence",
