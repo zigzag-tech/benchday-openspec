@@ -45,6 +45,7 @@
   "diagnostic_severities": ["info", "warning", "error"],
 
   "tones": ["neutral", "info", "success", "warning", "danger"],
+  "fits": ["fixed", "marquee", "ellipsis"],
   "icon_keys": [
     "spec", "check", "warning", "error", "info", "list", "play", "refresh",
     "doc", "folder", "tag", "clock", "question"
@@ -80,6 +81,7 @@
     "decoration_max_label_chars": 24,
     "decoration_max_segments": 4,
     "decoration_max_segment_chars": 16,
+    "decoration_max_elastic_chars": 64,
     "destination_max_params": 4,
     "destination_max_param_chars": 128,
     "popup_max_rows": 24,
