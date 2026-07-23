@@ -19,9 +19,9 @@ manifest plus JSON descriptors (the status page's HTML/JS is inlined in
   count of open changes, per-change `completed/total` task counts and status, and
   — only when a pane's cwd is genuinely inside `openspec/changes/<name>` — the
   change that pane is working on.
-- **Contributes** a work-row change-count badge, a terminal-header badge, an
-  active-change tag, a "Choose change" picker, and `Validate specs` /
-  `Validate change` actions.
+- **Contributes** read-only surfaces only: a work-row change-count badge, a
+  terminal-header badge, an active-change tag, and a project summary. The
+  package declares no action that runs a command or mutates project state.
 - **Ranks**, in its status page, the changes most relevant to the current pane
   (association is proven evidence and pins first; a soft match against the pane
   summary is suggested; the rest is a plain alphabetical inventory).
@@ -39,8 +39,8 @@ PLUGIN-API.md          # human authoring guide for benchday.plugin/1
 check.mjs              # standalone validator (node check.mjs) — no dependencies
 probes/                # detection + data collection (path_exists, exec_json, path_capture)
 report/                # schema + declarative probe→payload map
-actions/               # commands and destinations (validate, choose_change, view_status)
-contrib/               # slot placements (work-row / terminal / detail badges + actions)
+actions/               # destinations (view_status — the status page)
+contrib/               # slot placements (work-row / terminal / detail badges)
 ```
 
 ## Validate it

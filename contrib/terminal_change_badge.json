@@ -3,19 +3,35 @@
   "id": "terminal_change_badge",
   "slot": "terminal.header.badges",
   "priority": 10,
-  "when": { "exists": "active_change" },
+  "when": {
+    "exists": "active_change"
+  },
   "decoration": {
     "icon": "tag",
-    "label": { "template": "{0}", "args": [{ "report": "active_change" }] },
+    "label": {
+      "template": "{0}",
+      "args": [
+        {
+          "report": "active_change"
+        }
+      ]
+    },
     "tone": "info",
     "progress": {
-      "current": { "report": "active_change_completed" },
-      "total": { "report": "active_change_total" }
+      "current": {
+        "report": "active_change_completed"
+      },
+      "total": {
+        "report": "active_change_total"
+      }
     },
     "tooltip": {
-      "template": "OpenSpec change: {0} — tap to choose",
-      "args": [{ "report": "active_change" }]
+      "template": "OpenSpec change: {0}",
+      "args": [
+        {
+          "report": "active_change"
+        }
+      ]
     }
-  },
-  "action": "choose_change"
+  }
 }

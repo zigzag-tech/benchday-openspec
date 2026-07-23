@@ -32,10 +32,6 @@
         }
       }
     },
-    "validation_ok": {
-      "type": "boolean",
-      "description": "result of the most recent validate action, when one has run"
-    },
     "active_change": {
       "type": [
         "string",
