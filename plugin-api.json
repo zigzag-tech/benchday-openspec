@@ -90,6 +90,7 @@
     "popup_max_title_chars": 48,
     "popup_max_row_chars": 64,
     "web_page_max_bytes": 65536,
+    "work_max_panes_scanned": 32,
     "work_max_candidates": 32,
     "work_max_subjects_per_candidate": 3,
     "work_max_possible_per_candidate": 1,
