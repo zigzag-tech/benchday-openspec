@@ -2,6 +2,11 @@
   "schema": "benchday.plugin.contribution/1",
   "id": "terminal_badge",
   "slot": "terminal.header.badges",
+  "when": {
+    "not": {
+      "exists": "active_change"
+    }
+  },
   "decoration": {
     "icon": "spec",
     "label": {

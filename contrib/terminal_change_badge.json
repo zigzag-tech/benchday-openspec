@@ -26,12 +26,13 @@
       }
     },
     "tooltip": {
-      "template": "OpenSpec change: {0}",
+      "template": "OpenSpec change: {0} — tap for status",
       "args": [
         {
           "report": "active_change"
         }
       ]
     }
-  }
+  },
+  "action": "view_status"
 }
