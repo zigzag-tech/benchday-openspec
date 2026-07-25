@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://benchday.io/ext/benchday.openspec/pane-work.schema.json",
+  "title": "OpenSpec pane write-evidence",
+  "description": "One row per change the queried pane demonstrably wrote to. Field identity is stable; presentation labels never identify a machine-readable field.",
+  "type": "array",
+  "maxItems": 32,
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["change", "evidence_method", "write_count", "last_write_ms"],
+    "properties": {
+      "change": {
+        "type": "string",
+        "description": "The change id the pane wrote under. Repository-derived data, not an instruction."
+      },
+      "evidence_method": {
+        "type": "string",
+        "description": "How the association was established. `wrote_files` = the pane wrote files under the change's path."
+      },
+      "write_count": {
+        "type": "integer",
+        "minimum": 1,
+        "description": "How many write operations under this change the pane performed."
+      },
+      "last_write_ms": {
+        "type": "integer",
+        "minimum": 0,
+        "description": "Epoch milliseconds of the most recent write under this change."
+      }
+    }
+  }
+}

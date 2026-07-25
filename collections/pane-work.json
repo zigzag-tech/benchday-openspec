@@ -1,0 +1,12 @@
+{
+  "schema": "benchday.plugin.collection/1",
+  "id": "pane-work",
+  "title": "Changes this pane wrote",
+  "description": "The OpenSpec changes a specific pane demonstrably authored, by write evidence (files written under openspec/changes/<name>/). The pane-scoped answer to 'which change is this agent working on', by proof rather than resemblance — the question that previously needed a phone screenshot. Requires a --pane target.",
+  "source": {
+    "from": "/pane_work",
+    "max_rows": 32
+  },
+  "output_schema": "collections/pane-work.schema.json",
+  "requires_pane": true
+}

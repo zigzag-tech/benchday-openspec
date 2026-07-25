@@ -45,6 +45,7 @@
     "contrib/terminal_change_badge.json"
   ],
   "collections": [
-    "collections/changes.json"
+    "collections/changes.json",
+    "collections/pane-work.json"
   ]
 }
