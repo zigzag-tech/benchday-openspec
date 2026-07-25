@@ -43,5 +43,8 @@
     "contrib/project_summary.json",
     "contrib/terminal_badge.json",
     "contrib/terminal_change_badge.json"
+  ],
+  "collections": [
+    "collections/changes.json"
   ]
 }

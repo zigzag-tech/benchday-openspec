@@ -127,6 +127,39 @@ if (api && manifest) {
     }
   }
   for (const rel of fixtures) readJson(rel);
+
+  // Collections: agent-facing projections of the report. Each must parse, name
+  // a unique id, and declare an output_schema file that exists and parses — an
+  // agent discovering a missing schema mid-run has already been failed, so this
+  // is a packaging error, not a runtime surprise. (tasks 1.2–1.4)
+  const collections = manifest.collections || [];
+  if (collections.length > (L.max_collections || 16)) {
+    fail(`${collections.length} collections exceeds max_collections ${L.max_collections || 16}`);
+  }
+  /** @type {Set<string>} */
+  const collectionIds = new Set();
+  for (const rel of collections) {
+    const c = readJson(rel);
+    if (!c) continue;
+    if (c.schema !== (api.collection_schema || 'benchday.plugin.collection/1')) {
+      fail(`collection ${rel}: schema is ${JSON.stringify(c.schema)}, expected ${JSON.stringify(api.collection_schema || 'benchday.plugin.collection/1')}`);
+    }
+    if (!c.id) { fail(`collection ${rel}: missing id`); continue; }
+    if (collectionIds.has(c.id)) fail(`collection ${rel}: duplicate id ${JSON.stringify(c.id)}`);
+    collectionIds.add(c.id);
+    if (!c.title) fail(`collection ${rel}: missing title`);
+    if (!c.source || !c.source.from) fail(`collection ${rel}: missing source.from`);
+    if (!c.output_schema) {
+      fail(`collection ${rel}: missing output_schema`);
+    } else {
+      // The schema MUST resolve at validation time, not at read time.
+      const sch = readJson(c.output_schema);
+      if (sch) {
+        if (sch.$schema == null) fail(`collection ${rel}: output_schema must declare an explicit $schema`);
+        if (sch.$id == null) fail(`collection ${rel}: output_schema must declare an explicit $id`);
+      }
+    }
+  }
 }
 
 // License completeness — must be full text with a copyright holder, not a stub.

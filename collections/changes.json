@@ -1,0 +1,11 @@
+{
+  "schema": "benchday.plugin.collection/1",
+  "id": "changes",
+  "title": "Open changes",
+  "description": "In-flight OpenSpec changes for this project: name, task progress, and status. The bounded projection an agent reads to answer 'what is this project changing', without a phone screenshot.",
+  "source": {
+    "from": "/changes",
+    "max_rows": 32
+  },
+  "output_schema": "collections/changes.schema.json"
+}

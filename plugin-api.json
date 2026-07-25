@@ -7,6 +7,7 @@
   "contribution_schema": "benchday.plugin.contribution/1",
   "action_schema": "benchday.plugin.action/1",
   "probe_schema": "benchday.plugin.probe/1",
+  "collection_schema": "benchday.plugin.collection/1",
 
   "slots": [
     { "id": "project.summary", "version": 1, "kinds": ["decoration"] },
@@ -61,6 +62,7 @@
     "max_probes": 16,
     "max_actions": 24,
     "max_contributions": 32,
+    "max_collections": 16,
 
     "probe_default_timeout_ms": 5000,
     "probe_max_timeout_ms": 30000,
@@ -89,6 +91,10 @@
     "popup_max_rows": 24,
     "popup_max_title_chars": 48,
     "popup_max_row_chars": 64,
+    "collection_max_rows": 64,
+    "collection_max_title_chars": 48,
+    "collection_max_description_chars": 512,
+    "collection_max_row_bytes": 16384,
     "web_page_max_bytes": 65536,
     "work_max_panes_scanned": 32,
     "work_max_candidates": 32,
