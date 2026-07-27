@@ -4,7 +4,23 @@
   "slot": "terminal.header.badges",
   "priority": 10,
   "when": {
-    "exists": "active_change"
+    "all": [
+      {
+        "eq": [
+          { "report": "openspec_present" },
+          { "const": true }
+        ]
+      },
+      {
+        "eq": [
+          { "report": "cli_available" },
+          { "const": true }
+        ]
+      },
+      {
+        "exists": "active_change"
+      }
+    ]
   },
   "decoration": {
     "icon": "tag",

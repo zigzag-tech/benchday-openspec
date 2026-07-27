@@ -14,6 +14,9 @@
     "cli_available": {
       "exists": "list"
     },
+    "openspec_present": {
+      "exists": "has_openspec"
+    },
     "changes": {
       "probe": "list",
       "get": "/json/changes",
