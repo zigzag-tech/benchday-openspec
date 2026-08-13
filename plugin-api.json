@@ -32,6 +32,9 @@
   "effect_classes": ["read", "validate", "write-project", "external"],
   "effects_requiring_confirmation": ["write-project", "external"],
 
+  "$comment_item_verbs": "The CLOSED catalog of verbs an activated item may offer. A package SELECTS from these; it never describes one. Core owns each verb's label, icon, ordering, permission, confirmation, and behaviour — which is what stops a package's markup from becoming a UI or a command channel. `plugin.invoke` is the extension point: it runs a PluginAction the package already declared, through the ordinary action path, so nothing new is trusted. There is deliberately no send-to-pane verb: `compose.insert` composes and the user submits.",
+  "item_verbs": ["compose.insert", "clipboard.copy", "context.select", "plugin.invoke"],
+
   "permission_classes": [
     { "id": "project.read.metadata", "parameterized": false },
     { "id": "project.read.files", "parameterized": true },
@@ -95,6 +98,9 @@
     "collection_max_title_chars": 48,
     "collection_max_description_chars": 512,
     "collection_max_row_bytes": 16384,
+    "items_max": 64,
+    "item_actions_max": 4,
+    "item_text_max_chars": 256,
     "web_page_max_bytes": 65536,
     "work_max_panes_scanned": 32,
     "work_max_candidates": 32,
