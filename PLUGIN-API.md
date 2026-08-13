@@ -107,6 +107,51 @@ that opens a surface.
   package's *own* actions, each with an optional `when` guard, rendered as a
   native button bar in the sheet chrome (outside the sealed WebView).
 
+## Items — making what you render actionable
+
+A destination action MAY declare `items`, which turns the things it renders into
+things the user can act on. The shape deliberately matches `web.rank` and
+`web.work`: name a candidate array and the field that identifies each candidate,
+and the host reads both as opaque names.
+
+```json
+"items": {
+  "candidates": "changes",
+  "id": "name",
+  "text": "name",
+  "actions": [ { "verb": "compose.insert" }, { "verb": "clipboard.copy" } ]
+}
+```
+
+- `verb` ∈ `plugin-api.json.item_verbs`. You **select** verbs; you never describe
+  one. The label, icon, order, permission, and confirmation are the host's, and
+  they are identical in every package — which is why a user can trust what a menu
+  entry says.
+- `plugin.invoke` additionally names one of your **own declared actions**, run
+  through the ordinary action path with the activated item supplied as a
+  parameter. Its `effect` still decides whether it confirms.
+- Each entry accepts a `when` guard evaluated against **that candidate**, so a
+  verb can be offered on some items and not others.
+- There is no verb that sends to a pane. `compose.insert` puts text in the
+  composer and the user submits it — the pane usually holds an agent mid-turn.
+
+### Marking an element (`extension.web`)
+
+In the page, put `data-bd-item="<the id>"` on the element that should be
+activatable. There is no JavaScript API and nothing to call: the host injects its
+own listener, and the page can report *which item* and nothing else — no verb, no
+arguments, no text. An id that is not in your `candidates` array is ignored.
+
+**Mark a specific element, not the whole row.** Marking claims the click: the
+element's default behaviour is suppressed. If your row is a `<details>`, marking
+the row would eat the disclosure gesture, so mark the name inside it and let the
+rest of the row still expand. Style whatever you mark so it looks tappable — the
+host cannot do that for you, because only you know which part of your own markup
+it is.
+
+On the popup lane the same items apply, joined to rows by `key`. A row with no
+matching item keeps its existing one-tap `select` behaviour.
+
 ## Contributions (`benchday.plugin.contribution/1`)
 
 A contribution places a `decoration` (badge/label with `tone`, `icon`, optional
