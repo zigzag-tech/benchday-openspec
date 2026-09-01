@@ -25,7 +25,13 @@
     { "id": "extension.web", "version": 1, "views": ["page"] }
   ],
 
-  "probe_kinds": ["path_exists", "path_capture", "file_meta", "exec_version", "exec_json", "exec_text", "checklist_md"],
+  "probe_kinds": ["path_exists", "path_capture", "file_meta", "exec_version", "exec_json", "exec_text", "checklist_md", "exec_records"],
+
+  "$comment_expr_forms": "The report-map expression grammar (`ProbeExpr`). Hand-mirrored in Rust (plugins.rs) and TypeScript (schemas.ts) because an untagged union cannot be generated — so both are checked against THIS list instead of against each other. `object` is the catch-all and MUST stay last in every parser: a form ordered after it is silently read as a nested payload object rather than failing.",
+  "expr_forms": ["const", "exists", "count", "list", "line", "count_lines", "find", "count_where", "get", "object"],
+
+  "$comment_declaration_features": "Optional declaration features a report map may name in `features`. A daemon advertises the ones it implements as `plugin-decl:<feature>`; the hub refuses to send a map naming one a daemon lacks, because an untagged expression a build does not implement parses as something ELSE rather than failing.",
+  "declaration_features": ["records/1", "count_where/1"],
 
   "probe_context_keys": ["pane.cwd", "pane.id", "project.root"],
 
@@ -71,6 +77,11 @@
     "probe_max_timeout_ms": 30000,
     "probe_default_max_output_bytes": 65536,
     "probe_max_output_bytes": 262144,
+    "probe_default_max_records": 64,
+    "probe_max_records": 256,
+    "probe_max_record_bytes": 4096,
+    "count_where_max_literals": 8,
+    "count_where_max_literal_chars": 16,
     "max_concurrent_probes": 4,
 
     "action_default_timeout_ms": 20000,
