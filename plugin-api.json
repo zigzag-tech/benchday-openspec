@@ -52,6 +52,9 @@
 
   "publisher_trust_tiers": ["first-party", "verified", "community"],
 
+  "$comment_platforms": "Platforms a manifest may name in `platforms`. DECLARED reach, never discovered: a package says where it can render, and the catalog uses that to explain why an entry is listed but not usable on the device in the user's hand. There is deliberately no `desktop` — a grouping word hides which of three operating systems was actually meant, and the catalog has to say which one.",
+  "platforms": ["android", "ios", "macos", "linux", "windows", "web"],
+
   "freshness": ["fresh", "stale", "unavailable"],
   "completeness": ["complete", "partial"],
   "evidence_classes": ["path", "exec", "cwd", "session", "user"],
@@ -135,7 +138,15 @@
     "cache_max_bytes": 4194304,
     "cache_max_age_ms": 604800000,
     "audit_max_records": 512,
-    "audit_max_age_ms": 604800000
+    "audit_max_age_ms": 604800000,
+
+    "index_max_entries": 5000,
+    "index_max_bytes": 4194304,
+    "icon_max_bytes": 8192,
+    "screenshots_max": 5,
+    "categories_max": 3,
+    "install_max_packages_per_realm": 50,
+    "install_max_package_bytes": 4194304
   },
 
   "reserved_core_fields": [
