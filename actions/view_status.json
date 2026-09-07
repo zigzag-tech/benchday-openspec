@@ -41,7 +41,7 @@
       "text": "name",
       "query": "surface.summary",
       "evidence": {
-        "path_pattern": "openspec/changes/{id}/"
+        "path_pattern": "openspec/changes/{id}"
       }
     },
     "work": {
