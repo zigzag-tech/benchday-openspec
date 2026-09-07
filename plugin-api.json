@@ -25,13 +25,14 @@
     { "id": "extension.web", "version": 1, "views": ["page"] }
   ],
 
-  "probe_kinds": ["path_exists", "path_capture", "file_meta", "exec_version", "exec_json", "exec_text", "checklist_md", "exec_records"],
+  "$comment_probe_kinds": "`json_dir` reads every JSON document in a declared project directory, newest-modified first, bounded by document count and bytes per document. It exists because a package could otherwise only read a FIXED FILENAME, which forces any producer-written fact into a single-writer file; the alternatives were a shell glob inside a probe or a dependency on a CLI being installed. It takes `project.read.files:<dir>` — the same capability as `checklist_md`, which is the directory-scanning, contents-reading probe it is modelled on.",
+  "probe_kinds": ["path_exists", "path_capture", "file_meta", "exec_version", "exec_json", "exec_text", "checklist_md", "exec_records", "json_dir"],
 
   "$comment_expr_forms": "The report-map expression grammar (`ProbeExpr`). Hand-mirrored in Rust (plugins.rs) and TypeScript (schemas.ts) because an untagged union cannot be generated — so both are checked against THIS list instead of against each other. `object` is the catch-all and MUST stay last in every parser: a form ordered after it is silently read as a nested payload object rather than failing.",
   "expr_forms": ["const", "exists", "count", "list", "line", "count_lines", "find", "count_where", "get", "object"],
 
   "$comment_declaration_features": "Optional declaration features a report map may name in `features`. A daemon advertises the ones it implements as `plugin-decl:<feature>`; the hub refuses to send a map naming one a daemon lacks, because an untagged expression a build does not implement parses as something ELSE rather than failing.",
-  "declaration_features": ["records/1", "count_where/1"],
+  "declaration_features": ["records/1", "count_where/1", "json_dir/1"],
 
   "probe_context_keys": ["pane.cwd", "pane.id", "project.root"],
 
