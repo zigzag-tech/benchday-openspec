@@ -25,6 +25,19 @@
     { "id": "extension.web", "version": 1, "views": ["page"] }
   ],
 
+  "$comment_extraction_is_additive": "The extraction lane does NOT bump api_version, deliberately. Every field it adds is an optional manifest key, so a package written before it parses unchanged; and because v1 admits FIRST-PARTY extractor packages only, no extractor package ever travels to a hub that does not ship it. Bumping would have forced all four bundled packages (one of them a submodule with its own repository) to raise `api.max` in lockstep or go dark, since compatibility is an overlap and not a floor (compat.ts::pluginApiCompatible). The bump belongs with the first change that alters what a CLIENT must understand — the standing-note slot.",
+  "$comment_extractors": "The conversation-extraction lane (openspec change a-plugin-can-publish-a-fact). An extractor is INLINE in the manifest, not a package file, so the declared surface a package can smuggle behaviour through does not grow. `match_forms` is deliberately CLOSED and linear-time: a package-supplied regular expression is both a ReDoS on the hub's event loop and a general-purpose extraction language over the user's private text. It is a complexity and DoS choice, NOT a confidentiality boundary — the confidentiality control is `conversation.read.user_messages` plus where an extracted value is allowed to travel.",
+  "extractor_streams": ["conversation.user_messages"],
+  "match_forms": ["equals", "prefix", "delimited"],
+  "normalize_forms": ["whitespace", "strip_guard"],
+
+  "$comment_facts": "A fact is the fourth artifact beside probe/report/contribution: a conversation-scoped, contract-typed value carrying the message that produced it. `fact_states` is deliberately two-valued and `fact_end_causes` names WHY a fact ended — storage expiry is NOT among them, because a row removed by a retention bound must never read as the work having finished.",
+  "$comment_no_boundary_cause": "There is deliberately NO boundary end cause. The substrate's `segmentBoundary` is ONE BIT that fires on a structural root, a /compact summary, /clear AND /new alike, so ending a fact on it would delete the goal in the middle of the long task the goal exists for. A package instead names the COMMANDS that end its fact (`clear_commands`), which the host resolves dialect-aware; /compact is simply not among them. A genuinely new conversation needs no cause at all, because a fact is scoped to one conversation and does not travel.",
+  "fact_states": ["current", "ended"],
+  "fact_end_causes": ["replaced", "cleared"],
+  "$comment_fact_contracts": "The CLOSED registry of contract ids. A package SELECTS a contract in `provides`; it never defines one, and the host owns each contract's value schema. Contract ids carry their major version, so a breaking change is a new id rather than a range nobody can test.",
+  "fact_contracts": ["benchday.goal/1"],
+
   "$comment_probe_kinds": "`json_dir` reads every JSON document in a declared project directory, newest-modified first, bounded by document count and bytes per document. It exists because a package could otherwise only read a FIXED FILENAME, which forces any producer-written fact into a single-writer file; the alternatives were a shell glob inside a probe or a dependency on a CLI being installed. It takes `project.read.files:<dir>` — the same capability as `checklist_md`, which is the directory-scanning, contents-reading probe it is modelled on.",
   "probe_kinds": ["path_exists", "path_capture", "file_meta", "exec_version", "exec_json", "exec_text", "checklist_md", "exec_records", "json_dir"],
 
@@ -47,7 +60,8 @@
     { "id": "project.read.files", "parameterized": true },
     { "id": "process.exec", "parameterized": true },
     { "id": "work.read.associations", "parameterized": false },
-    { "id": "work.read.labels", "parameterized": false }
+    { "id": "work.read.labels", "parameterized": false },
+    { "$comment": "Reading what the person typed to their agent is NOT a parameter of project.read.* — a repository read and a conversation read are different grants and must not share a checkbox. Required to PRODUCE a conversation-derived fact and equally to CONSUME one, or a package without the grant receives the user's words through one that has it.", "id": "conversation.read.user_messages", "parameterized": false }
   ],
 
   "publisher_trust_tiers": ["first-party", "verified", "community"],
@@ -61,6 +75,9 @@
   "diagnostic_severities": ["info", "warning", "error"],
 
   "tones": ["neutral", "info", "success", "warning", "danger"],
+
+  "$comment_progress_displays": "How a `progress {current,total}` decoration renders its NUMBER. `count` (the default, and the pre-existing behaviour) prints `current/total` — right when both are real quantities the reader recognises, like 9 of 12 tasks. `percent` prints one rounded percentage and hides the denominator — right when `total` is a scale rather than a quantity: `900/1000` told a reader nothing except that someone picked 1000. The package declares which its numbers ARE; core owns how each is drawn.",
+  "progress_displays": ["count", "percent"],
   "fits": ["fixed", "marquee", "ellipsis"],
   "icon_keys": [
     "spec", "check", "warning", "error", "info", "list", "play", "refresh",
@@ -146,7 +163,16 @@
     "screenshots_max": 5,
     "categories_max": 3,
     "install_max_packages_per_realm": 50,
-    "install_max_package_bytes": 4194304
+    "install_max_package_bytes": 4194304,
+
+    "max_extractors": 4,
+    "extractor_max_marker_chars": 48,
+    "extractor_max_guard_chars": 32,
+    "extractor_max_input_bytes": 262144,
+    "extractor_max_messages_per_pass": 512,
+    "fact_max_value_bytes": 2048,
+    "fact_max_per_subject": 8,
+    "fact_max_diagnostics": 8
   },
 
   "reserved_core_fields": [
