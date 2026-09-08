@@ -1,6 +1,6 @@
 {
   "$comment": "Single source of truth for the project-plugin ABI. Edit here, then run: node packages/benchday-protocol/generate-plugin-api.mjs",
-  "api_version": 1,
+  "api_version": 2,
   "manifest_schema": "benchday.plugin/1",
   "report_envelope_schema": "benchday.plugin.report/1",
   "report_map_schema": "benchday.plugin.report-map/1",
@@ -16,8 +16,11 @@
     { "id": "work.detail.actions", "version": 1, "kinds": ["action", "decoration"] },
     { "id": "terminal.header.badges", "version": 1, "kinds": ["decoration"] },
     { "id": "terminal.context.actions", "version": 1, "kinds": ["action"] },
-    { "id": "terminal.command.palette", "version": 1, "kinds": ["action"] }
+    { "id": "terminal.command.palette", "version": 1, "kinds": ["action"] },
+    { "id": "terminal.standing.note", "version": 1, "kinds": ["note"] }
   ],
+
+  "$comment_standing_note": "A `note` is a host-drawn band of at most three lines that stands above the terminal body for as long as the thing it reports is true — the first slot whose primitive is a SENTENCE rather than a label, because a decoration caps at 24 chars (64 for its one elastic run) and the goals people actually write run to 449. It passes the Primitive Admission Test (docs/extensions-architecture.md §7) on two independent uses that arrived from different directions: benchday.goal renders the conversation-scoped goal fact, and benchday.git renders `rebase/merge in progress`, which is a filesystem probe and carries no conversation. Its deterministic downgrade is a `terminal.header.badges` decoration holding the ellipsised first line (compat.ts::downgradeNote), which is why THIS is the change that takes api_version to 2: it is the first one that alters what a CLIENT must understand.",
 
   "surfaces": [
     { "id": "files", "version": 1, "views": ["browser", "recent", "git"] },
@@ -54,6 +57,9 @@
 
   "$comment_item_verbs": "The CLOSED catalog of verbs an activated item may offer. A package SELECTS from these; it never describes one. Core owns each verb's label, icon, ordering, permission, confirmation, and behaviour — which is what stops a package's markup from becoming a UI or a command channel. `plugin.invoke` is the extension point: it runs a PluginAction the package already declared, through the ordinary action path, so nothing new is trusted. There is deliberately no send-to-pane verb: `compose.insert` composes and the user submits.",
   "item_verbs": ["compose.insert", "clipboard.copy", "context.select", "plugin.invoke"],
+
+  "$comment_draft_kinds": "The CLOSED catalog of texts a package may ask the HOST to write. A package SELECTS a kind; it never supplies a prompt, a model, a context selector, or a temperature — exactly as `item_verbs` lets it select a verb without describing one. That is not tidiness: a package-supplied prompt is code with worse tooling, and it is the injection surface, because the prompt would be reading the user's own conversation. What the package learns is that it asked for a \"goal\"; the prompt, the inputs, the model chain, the bound on the output and where the text lands are all core's. And the text lands in the COMPOSER — there is no send-to-pane verb here for the same reason there is none in `item_verbs`.",
+  "draft_kinds": ["goal"],
 
   "permission_classes": [
     { "id": "project.read.metadata", "parameterized": false },
@@ -117,6 +123,11 @@
     "report_max_diagnostics": 16,
     "report_default_ttl_ms": 60000,
 
+    "note_max_chars": 480,
+    "note_max_lines": 3,
+    "note_max_source_chars": 24,
+    "note_max_per_pane": 1,
+
     "decoration_max_label_chars": 24,
     "decoration_max_segments": 4,
     "decoration_max_segment_chars": 16,
@@ -164,6 +175,9 @@
     "categories_max": 3,
     "install_max_packages_per_realm": 50,
     "install_max_package_bytes": 4194304,
+
+    "$comment_max_requirements": "How many fact contracts one package may declare in `requires`. Small on purpose: a package needing more than a handful of other packages' facts to render is describing an application, not a contribution, and every entry is a provider the realm must hold before the package can activate at all.",
+    "max_requirements": 8,
 
     "max_extractors": 4,
     "extractor_max_marker_chars": 48,
