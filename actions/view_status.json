@@ -15,6 +15,10 @@
     "text": "name",
     "actions": [
       {
+        "verb": "plugin.invoke",
+        "action": "open_change_files"
+      },
+      {
         "verb": "compose.insert"
       },
       {

@@ -1,0 +1,13 @@
+{
+  "schema": "benchday.plugin.action/1",
+  "id": "open_change_files",
+  "label": "Open files",
+  "icon": "folder",
+  "effect": "read",
+  "semantic_key": "openspec.open_change_files",
+  "destination": {
+    "surface": "files",
+    "view": "browser",
+    "params": { "path_prefix": "openspec/changes/" }
+  }
+}

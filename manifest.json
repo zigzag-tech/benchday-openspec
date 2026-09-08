@@ -1,7 +1,7 @@
 {
   "schema": "benchday.plugin/1",
   "id": "benchday.openspec",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "display_name": "OpenSpec",
   "publisher": {
     "id": "benchday",
@@ -35,6 +35,7 @@
     "ttl_ms": 60000
   },
   "actions": [
+    "actions/open_change_files.json",
     "actions/view_status.json"
   ],
   "contributions": [
