@@ -9,7 +9,7 @@
   },
   "api": {
     "min": 1,
-    "max": 2
+    "max": 3
   },
   "description": "Surfaces a project's OpenSpec state — open changes, task progress, validation — on the work row and in detail.",
   "permissions": [
