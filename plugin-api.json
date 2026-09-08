@@ -58,6 +58,9 @@
   "$comment_item_verbs": "The CLOSED catalog of verbs an activated item may offer. A package SELECTS from these; it never describes one. Core owns each verb's label, icon, ordering, permission, confirmation, and behaviour — which is what stops a package's markup from becoming a UI or a command channel. `plugin.invoke` is the extension point: it runs a PluginAction the package already declared, through the ordinary action path, so nothing new is trusted. There is deliberately no send-to-pane verb: `compose.insert` composes and the user submits.",
   "item_verbs": ["compose.insert", "clipboard.copy", "context.select", "plugin.invoke"],
 
+  "$comment_draft_kinds": "The CLOSED catalog of texts a package may ask the HOST to write. A package SELECTS a kind; it never supplies a prompt, a model, a context selector, or a temperature — exactly as `item_verbs` lets it select a verb without describing one. That is not tidiness: a package-supplied prompt is code with worse tooling, and it is the injection surface, because the prompt would be reading the user's own conversation. What the package learns is that it asked for a \"goal\"; the prompt, the inputs, the model chain, the bound on the output and where the text lands are all core's. And the text lands in the COMPOSER — there is no send-to-pane verb here for the same reason there is none in `item_verbs`.",
+  "draft_kinds": ["goal"],
+
   "permission_classes": [
     { "id": "project.read.metadata", "parameterized": false },
     { "id": "project.read.files", "parameterized": true },
