@@ -18,7 +18,8 @@
     { "id": "terminal.context.actions", "version": 1, "kinds": ["action"] },
     { "id": "terminal.command.palette", "version": 1, "kinds": ["action"] },
     { "id": "terminal.header.indicators", "version": 1, "kinds": ["indicator"] },
-    { "id": "terminal.standing.note", "version": 1, "kinds": ["note"] }
+    { "id": "terminal.standing.note", "version": 1, "kinds": ["note"] },
+    { "id": "account.dashboard", "version": 1, "kinds": ["account-entry"] }
   ],
 
   "$comment_indicator": "An `indicator` is a host-drawn word of at most `indicator_label_max_chars` characters sitting in the context rail -- GOAL, GIT -- drawn hollow when it has nothing to report and filled when it does, and opening a host-drawn sheet carrying its detail text and the package's own actions. It exists because the note it replaces was always at its largest: a full row above the terminal plus a second rail row for its action, for a feature whose job is to stay out of the way until asked. What makes it an ABI change rather than a client rendering is that an indicator is PRESENT ON THE SURFACE WHILE ABSENT IN CONTENT -- every other contribution resolves or does not, so `when: {fact_current: ...}` cannot express a hollow indicator. The declaration therefore splits AVAILABILITY (`when`: should this exist for this pane) from PRESENCE (`present`: does it currently have something to say). THIS is why api_version goes to 3: the slot carries a new KIND, so a consumer that merely knew the slot id would still not know how to draw it. Its downgrade CASCADES -- indicator -> note -> decoration (compat.ts) -- so a v2 client keeps the band it has today and a v1 client keeps its chip. ONE declared word serves both the rail and the sheet title: an earlier draft had a separate one- or two-character glyph, which forced `Goal` and `Git` onto the same letter and made the rail a puzzle to decode.",
@@ -69,7 +70,8 @@
     { "id": "process.exec", "parameterized": true },
     { "id": "work.read.associations", "parameterized": false },
     { "id": "work.read.labels", "parameterized": false },
-    { "$comment": "Reading what the person typed to their agent is NOT a parameter of project.read.* — a repository read and a conversation read are different grants and must not share a checkbox. Required to PRODUCE a conversation-derived fact and equally to CONSUME one, or a package without the grant receives the user's words through one that has it.", "id": "conversation.read.user_messages", "parameterized": false }
+    { "$comment": "Reading what the person typed to their agent is NOT a parameter of project.read.* — a repository read and a conversation read are different grants and must not share a checkbox. Required to PRODUCE a conversation-derived fact and equally to CONSUME one, or a package without the grant receives the user's words through one that has it.", "id": "conversation.read.user_messages", "parameterized": false },
+    { "$comment": "Narrow host-resolved aggregate snapshot. It never exposes receipts or an account selector and is accepted only for bundled first-party account-dashboard packages.", "id": "account.metrics.snapshot", "parameterized": false }
   ],
 
   "publisher_trust_tiers": ["first-party", "verified", "community"],
@@ -161,6 +163,8 @@
     "action_max_label_chars": 32,
     "max_contributions_per_slot": 3,
     "max_contributions_per_plugin_per_slot": 2,
+    "account_dashboard_max_entries": 4,
+    "account_snapshot_max_bytes": 65536,
 
     "failure_backoff_threshold": 3,
     "failure_backoff_base_ms": 30000,
